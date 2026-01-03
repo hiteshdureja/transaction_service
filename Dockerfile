@@ -24,12 +24,14 @@ RUN pip install --no-cache-dir --upgrade pip \
 # Copy project
 COPY . .
 
-# Collect static files (if any)
-RUN python manage.py collectstatic --noinput --clear || true
+# Copy entrypoint script
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
 # Expose port
 EXPOSE 8000
 
-# Run gunicorn
+# Use entrypoint script to run migrations, then start gunicorn
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "120"]
 
