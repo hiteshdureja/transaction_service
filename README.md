@@ -61,6 +61,33 @@ A scalable Django-based service for handling transactions asynchronously. This s
     ]
     ```
 
+## Sample cURL Requests
+
+You can test the deployed service using the following commands:
+
+**1. Health Check**
+```bash
+curl --location 'https://web-production-4925e.up.railway.app/'
+```
+
+**2. Create Transaction**
+```bash
+curl --location 'https://web-production-4925e.up.railway.app/v1/webhooks/transactions' \
+--header 'Content-Type: application/json' \
+--data '{
+    "transaction_id": "txn_test_1",
+    "source_account": "acc_test1",
+    "destination_account": "acc_test2",
+    "amount": 5000,
+    "currency": "INR"
+  }'
+```
+
+**3. Get Transaction Status**
+```bash
+curl --location 'https://web-production-4925e.up.railway.app/v1/transactions/txn_test_1'
+```
+
 ## Local Development Setup
 
 1.  **Clone the repository:**
