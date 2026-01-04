@@ -13,3 +13,4 @@ python manage.py collectstatic --noinput --clear || true
 echo "Starting Gunicorn..."
 exec "$@"
 
+

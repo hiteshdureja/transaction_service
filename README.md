@@ -381,21 +381,21 @@ After deployment, test your endpoints:
 
 ```bash
 # Health check
-curl https://your-app-url.com/
+curl --location 'https://web-production-4925e.up.railway.app/'
 
-# Send a transaction webhook
-curl -X POST https://your-app-url.com/v1/webhooks/transactions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "transaction_id": "txn_test_123",
-    "source_account": "acc_user_789",
-    "destination_account": "acc_merchant_456",
-    "amount": 1500,
+# Send webhook
+curl --location 'https://web-production-4925e.up.railway.app/v1/webhooks/transactions' \
+--header 'Content-Type: application/json' \
+--data '{
+    "transaction_id": "txn_test_1",
+    "source_account": "acc_1",
+    "destination_account": "acc_2",
+    "amount": 3000,
     "currency": "INR"
   }'
 
-# Check transaction status (wait ~30 seconds for processing)
-curl https://your-app-url.com/v1/transactions/txn_test_123
+# Check transaction status
+curl --location 'https://web-production-4925e.up.railway.app/v1/transactions/txn_test_1'
 ```
 
 ## Technical Choices
