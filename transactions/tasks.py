@@ -1,26 +1,28 @@
 import time
+import logging
 from celery import shared_task
 from django.utils import timezone
 from .models import Transaction
 
+logger = logging.getLogger(__name__)
+
 @shared_task
 def process_transaction(transaction_id):
     try:
-        print(f"🚀 Starting transaction processing for ID: {transaction_id}")
+        logger.info(f"Processing transaction: {transaction_id}")
         txn = Transaction.objects.get(id=transaction_id)
 
-        # Simulate API delay
         time.sleep(30)
 
         txn.status = "PROCESSED"
         txn.processed_at = timezone.now()
         txn.save()
 
-        print(f"✅ Transaction {txn.transaction_id} processed successfully.")
+        logger.info(f"Transaction processed: {txn.transaction_id}")
         return f"Transaction {txn.transaction_id} processed."
     except Transaction.DoesNotExist:
-        print(f"⚠️ Transaction {transaction_id} not found.")
+        logger.warning(f"Transaction not found: {transaction_id}")
         return "Transaction not found."
     except Exception as e:
-        print(f"❌ Error processing transaction {transaction_id}: {e}")
+        logger.error(f"Error processing transaction {transaction_id}: {e}")
         return str(e)
